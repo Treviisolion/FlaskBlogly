@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <h1>Edit Post</h1>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-xl">
+        <form action="/posts/{{post.id}}/edit" method="post">
+            <div class="form-group">
+                <label for="title">Title </label>
+                <input type="text" class="form-control" name="title" id="title" placeholder="{{post.title}}" maxlength="128">
+            </div>
+            <div class="from-group">
+                <label for="content">Content </label>
+                <textarea class="form-control" name="content" id="content" rows="10" placeholder="{{post.content}}"></textarea>
+            </div>
+            <br>
+            <a href="/users/{{user.id}}" class="btn btn-outline-info">Cancel</a>
+            <input type="submit" value="Edit" class="btn btn-success">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

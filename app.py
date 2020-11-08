@@ -2,7 +2,7 @@
 
 from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, redirect, render_template, request, send_file
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -14,6 +14,8 @@ connect_db(app)
 app.config['SECRET_KEY'] = 'JohnathonAppleseed452'
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
+
+db.create_all()
 
 
 @app.route('/')
@@ -43,7 +45,7 @@ def show_user(userid):
     """Show a specific user"""
 
     user = User.query.get_or_404(userid)
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, posts=user.posts)
 
 
 @app.route('/users/new', methods=['GET'])
@@ -57,8 +59,8 @@ def show_new_user_form():
 def create_user():
     """Creates a user"""
 
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
+    first_name = request.form.get('first_name', None)
+    last_name = request.form.get('last_name', None)
     image_url = request.form.get('image_url', None)
 
     if not image_url:
@@ -74,7 +76,7 @@ def create_user():
 
 @app.route('/users/<userid>/edit', methods=['GET'])
 def show_edit_user_form(userid):
-    """Returns the form for editing the specified user"""
+    """Shows the form for editing the specified user"""
 
     user = User.query.get_or_404(userid)
     return render_template('user_edit.html', user=user)
@@ -104,3 +106,68 @@ def delete_user(userid):
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.route('/users/<userid>/posts/new', methods=['GET'])
+def show_new_post_form(userid):
+    """Shows the form for creating a new post for the specified user"""
+
+    user = User.query.get_or_404(userid)
+    return render_template('new_post.html', user=user)
+
+
+@app.route('/users/<userid>/posts/new', methods=['POST'])
+def create_post(userid):
+    """Creates a new post for the specified user"""
+
+    user = User.query.get_or_404(userid)
+    title = request.form.get('title', None)
+    content = request.form.get('content', None)
+
+    new_post = Post(title=title, content=content, user_id=user.id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{userid}')
+
+
+@app.route('/posts/<postid>')
+def show_post(postid):
+    """Shows the specified post"""
+
+    post = Post.query.get_or_404(postid)
+    return render_template('post.html', post=post, user=post.user)
+
+
+@app.route('/posts/<postid>/edit', methods=['GET'])
+def show_edit_post_form(postid):
+    """Shows the form for editing a post for the specified post"""
+
+    post = Post.query.get_or_404(postid)
+    return render_template('edit_post.html', post=post, user=post.user)
+
+
+@app.route('/posts/<postid>/edit', methods=['POST'])
+def edit_post(postid):
+    """Edits the specified post"""
+
+    post = Post.query.get_or_404(postid)
+    title = request.form.get('title', None)
+    content = request.form.get('content', None)
+
+    post.update_post(title, content)
+    db.session.commit()
+
+    return redirect(f'/posts/{postid}')
+
+@app.route('/posts/<postid>/delete', methods=['POST'])
+def delete_post(postid):
+    """Deletes the specified post"""
+
+    post = Post.query.get_or_404(postid)
+    user = post.user
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user.id}')

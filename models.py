@@ -1,6 +1,7 @@
 """Models for Blogly."""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
@@ -18,10 +19,12 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    first_name = db.Column(db.String(), nullable=False)
-    last_name = db.Column(db.String(), nullable=False)
+    first_name = db.Column(db.String(64), nullable=False)
+    last_name = db.Column(db.String(64), nullable=False)
     image_url = db.Column(
         db.String(), default='/static/uploads/default_user.png')
+
+    posts = db.relationship('Post')
 
     def update_user(self, first, last, url):
         """Updates the user with the provided information, if parameter is set to None will not update that field"""
@@ -32,3 +35,26 @@ class User(db.Model):
             self.last_name = last
         if url:
             self.image_url = url
+
+
+class Post(db.Model):
+    """Post"""
+
+    __tablename__ = "post"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(128), nullable=False)
+    content = db.Column(db.String(), nullable=False)
+    created_at = db.Column(db.TIMESTAMP(timezone=True),
+                           nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    user = db.relationship('User')
+
+    def update_post(self, title, content):
+        """Updates the post with the provided information, if parameter is set to None will not update that field"""
+
+        if title:
+            self.title = title
+        if content:
+            self.content = content

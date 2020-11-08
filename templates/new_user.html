@@ -2,16 +2,27 @@
 
 {% block content %}
 
-<h1>Create a User</h1>
-
-<form action="/users/new" method="post">
-    <label for="first_name">First Name</label>
-    <input type="text" name="first_name" id="first_name" placeholder="Enter a first name"><br>
-    <label for="last_name">Last Name</label>
-    <input type="text" name="last_name" id="last_name" placeholder="Enter a last name"><br>
-    <label for="image_url">Image URL</label>
-    <input type="url" name="image_url" id="image_url" placeholder="Provide an image of this user"><br>
-    <input type="submit" value="Add" class="btn btn-success">
-</form>
+<div class="row justify-content-md-center">
+    <h1>Create a User</h1>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-xl">
+        <form action="/users/new" method="post">
+            <div class="form-group"> 
+                <label for="first_name">First Name </label>
+                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Enter a first name" maxlength="64" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name </label>
+                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter a last name" maxlength="64" required>
+            </div>
+            <div class="form-group">
+                <label for="image_url">Image URL </label>
+                <input type="url" class="form-control" name="image_url" id="image_url" placeholder="Provide an image of this user">
+            </div>
+            <input type="submit" value="Add" class="btn btn-success">
+        </form>
+    </div>
+</div>
 
 {% endblock %}
