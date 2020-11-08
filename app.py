@@ -29,7 +29,7 @@ def redirect_to_users():
 def return_default_user():
     """Returns the default user profile"""
 
-    return send_file(DEFAULT_IMAGE)
+    return send_file(DEFAULT_IMAGE[1:])
 
 
 @app.route('/users')
