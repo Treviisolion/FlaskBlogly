@@ -2,7 +2,7 @@
 
 from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, redirect, render_template, request, send_file
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, DEFAULT_IMAGE
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -12,8 +12,8 @@ app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
 
 app.config['SECRET_KEY'] = 'JohnathonAppleseed452'
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-debug = DebugToolbarExtension(app)
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# debug = DebugToolbarExtension(app)
 
 db.create_all()
 
@@ -25,11 +25,11 @@ def redirect_to_users():
     return redirect('/users')
 
 
-@app.route('/static/uploads/default_user.png')
+@app.route(DEFAULT_IMAGE)
 def return_default_user():
     """Returns the default user profile"""
 
-    return send_file('static/uploads/default_user.png')
+    return send_file(DEFAULT_IMAGE)
 
 
 @app.route('/users')

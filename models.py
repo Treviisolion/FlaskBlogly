@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
+DEFAULT_IMAGE = '/static/uploads/default_user.png'
 
 def connect_db(app):
     """Connect to database."""
@@ -22,7 +23,7 @@ class User(db.Model):
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
     image_url = db.Column(
-        db.String(), default='/static/uploads/default_user.png')
+        db.String(), default=DEFAULT_IMAGE)
 
     posts = db.relationship('Post')
 
