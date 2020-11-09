@@ -89,7 +89,7 @@ def show_edit_user_form(userid):
     """Shows the form for editing the specified user"""
 
     user = User.query.get_or_404(userid)
-    return render_template('user_edit.html', user=user)
+    return render_template('edit_user.html', user=user)
 
 
 @app.route('/users/<int:userid>/edit', methods=['POST'])
@@ -152,7 +152,7 @@ def create_post(userid):
     return redirect(f'/users/{userid}')
 
 
-@app.route('/posts/<int:post>')
+@app.route('/posts/<int:postid>')
 def show_post(postid):
     """Shows the specified post"""
 
@@ -160,7 +160,7 @@ def show_post(postid):
     return render_template('post.html', post=post, user=post.user)
 
 
-@app.route('/posts/<int:post>/edit', methods=['GET'])
+@app.route('/posts/<int:postid>/edit', methods=['GET'])
 def show_edit_post_form(postid):
     """Shows the form for editing a post for the specified post"""
 
@@ -168,7 +168,7 @@ def show_edit_post_form(postid):
     return render_template('edit_post.html', post=post, user=post.user)
 
 
-@app.route('/posts/<int:post>/edit', methods=['POST'])
+@app.route('/posts/<int:postid>/edit', methods=['POST'])
 def edit_post(postid):
     """Edits the specified post"""
 
@@ -182,7 +182,7 @@ def edit_post(postid):
     return redirect(f'/posts/{postid}')
 
 
-@app.route('/posts/<int:post>/delete', methods=['POST'])
+@app.route('/posts/<int:postid>/delete', methods=['POST'])
 def delete_post(postid):
     """Deletes the specified post"""
 
