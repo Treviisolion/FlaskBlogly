@@ -142,7 +142,7 @@ def create_post(userid):
     if not content:
         missing_content = True
     if missing_title or missing_content:
-        return render_template('new_post.html', missing_content=missing_content, missing_title=missing_title)
+        return render_template('new_post.html', user=user, missing_content=missing_content, missing_title=missing_title)
 
     new_post = Post(title=title, content=content, user_id=user.id)
 
