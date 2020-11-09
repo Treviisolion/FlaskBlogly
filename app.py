@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, redirect, render_template, request, send_file, abort
+from flask import Flask, redirect, render_template, request, send_file
 from models import db, connect_db, User, Post, DEFAULT_IMAGE
 
 app = Flask(__name__)
@@ -45,7 +45,6 @@ def show_user(userid):
     """Show a specific user"""
 
     user = User.query.get_or_404(userid)
-
     return render_template('user.html', user=user, posts=user.posts)
 
 
@@ -85,27 +84,19 @@ def create_user():
     return redirect(f'/users')
 
 
-@app.route('/users/<userid>/edit', methods=['GET'])
+@app.route('/users/<int:userid>/edit', methods=['GET'])
 def show_edit_user_form(userid):
     """Shows the form for editing the specified user"""
 
-    try:
-        user = User.query.get_or_404(userid)
-    except:
-        abort(404)
-
+    user = User.query.get_or_404(userid)
     return render_template('user_edit.html', user=user)
 
 
-@app.route('/users/<userid>/edit', methods=['POST'])
+@app.route('/users/<int:userid>/edit', methods=['POST'])
 def edit_user(userid):
     """Edit user in database"""
 
-    try:
-        user = User.query.get_or_404(userid)
-    except:
-        abort(404)
-
+    user = User.query.get_or_404(userid)
     first_name = request.form.get('first_name', None)
     last_name = request.form.get('last_name', None)
     image_url = request.form.get('image_url', None)
@@ -116,42 +107,30 @@ def edit_user(userid):
     return redirect('/users')
 
 
-@app.route('/users/<userid>/delete', methods=['POST'])
+@app.route('/users/<int:userid>/delete', methods=['POST'])
 def delete_user(userid):
     """Delete user in database"""
 
-    try:
-        user = User.query.get_or_404(userid)
-    except:
-        abort(404)
-
+    user = User.query.get_or_404(userid)
     db.session.delete(user)
     db.session.commit()
 
     return redirect('/users')
 
 
-@app.route('/users/<userid>/posts/new', methods=['GET'])
+@app.route('/users/<int:userid>/posts/new', methods=['GET'])
 def show_new_post_form(userid):
     """Shows the form for creating a new post for the specified user"""
 
-    try:
-        user = User.query.get_or_404(userid)
-    except:
-        abort(404)
-
+    user = User.query.get_or_404(userid)
     return render_template('new_post.html', user=user)
 
 
-@app.route('/users/<userid>/posts/new', methods=['POST'])
+@app.route('/users/<int:userid>/posts/new', methods=['POST'])
 def create_post(userid):
     """Creates a new post for the specified user"""
 
-    try:
-        user = User.query.get_or_404(userid)
-    except:
-        abort(404)
-
+    user = User.query.get_or_404(userid)
     title = request.form.get('title', None)
     content = request.form.get('content', None)
 
@@ -173,39 +152,27 @@ def create_post(userid):
     return redirect(f'/users/{userid}')
 
 
-@app.route('/posts/<postid>')
+@app.route('/posts/<int:post>')
 def show_post(postid):
     """Shows the specified post"""
 
-    try:
-        post = Post.query.get_or_404(postid)
-    except:
-        abort(404)
-
+    post = Post.query.get_or_404(postid)
     return render_template('post.html', post=post, user=post.user)
 
 
-@app.route('/posts/<postid>/edit', methods=['GET'])
+@app.route('/posts/<int:post>/edit', methods=['GET'])
 def show_edit_post_form(postid):
     """Shows the form for editing a post for the specified post"""
 
-    try:
-        post = Post.query.get_or_404(postid)
-    except:
-        abort(404)
-
+    post = Post.query.get_or_404(postid)
     return render_template('edit_post.html', post=post, user=post.user)
 
 
-@app.route('/posts/<postid>/edit', methods=['POST'])
+@app.route('/posts/<int:post>/edit', methods=['POST'])
 def edit_post(postid):
     """Edits the specified post"""
 
-    try:
-        post = Post.query.get_or_404(postid)
-    except:
-        abort(404)
-
+    post = Post.query.get_or_404(postid)
     title = request.form.get('title', None)
     content = request.form.get('content', None)
 
@@ -215,15 +182,11 @@ def edit_post(postid):
     return redirect(f'/posts/{postid}')
 
 
-@app.route('/posts/<postid>/delete', methods=['POST'])
+@app.route('/posts/<int:post>/delete', methods=['POST'])
 def delete_post(postid):
     """Deletes the specified post"""
 
-    try:
-        post = Post.query.get_or_404(postid)
-    except:
-        abort(404)
-
+    post = Post.query.get_or_404(postid)
     user = post.user
     db.session.delete(post)
     db.session.commit()
