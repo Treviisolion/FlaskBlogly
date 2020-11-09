@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, redirect, render_template, request, send_file
+from flask import Flask, redirect, render_template, request, send_file, abort
 from models import db, connect_db, User, Post, DEFAULT_IMAGE
 
 app = Flask(__name__)
@@ -40,11 +40,12 @@ def show_users():
     return render_template('users.html', users=users)
 
 
-@app.route('/users/<userid>')
+@app.route('/users/<int:userid>')
 def show_user(userid):
     """Show a specific user"""
 
     user = User.query.get_or_404(userid)
+
     return render_template('user.html', user=user, posts=user.posts)
 
 
@@ -88,7 +89,11 @@ def create_user():
 def show_edit_user_form(userid):
     """Shows the form for editing the specified user"""
 
-    user = User.query.get_or_404(userid)
+    try:
+        user = User.query.get_or_404(userid)
+    except:
+        abort(404)
+
     return render_template('user_edit.html', user=user)
 
 
@@ -96,7 +101,11 @@ def show_edit_user_form(userid):
 def edit_user(userid):
     """Edit user in database"""
 
-    user = User.query.get_or_404(userid)
+    try:
+        user = User.query.get_or_404(userid)
+    except:
+        abort(404)
+
     first_name = request.form.get('first_name', None)
     last_name = request.form.get('last_name', None)
     image_url = request.form.get('image_url', None)
@@ -111,7 +120,11 @@ def edit_user(userid):
 def delete_user(userid):
     """Delete user in database"""
 
-    user = User.query.get_or_404(userid)
+    try:
+        user = User.query.get_or_404(userid)
+    except:
+        abort(404)
+
     db.session.delete(user)
     db.session.commit()
 
@@ -122,7 +135,11 @@ def delete_user(userid):
 def show_new_post_form(userid):
     """Shows the form for creating a new post for the specified user"""
 
-    user = User.query.get_or_404(userid)
+    try:
+        user = User.query.get_or_404(userid)
+    except:
+        abort(404)
+
     return render_template('new_post.html', user=user)
 
 
@@ -130,7 +147,11 @@ def show_new_post_form(userid):
 def create_post(userid):
     """Creates a new post for the specified user"""
 
-    user = User.query.get_or_404(userid)
+    try:
+        user = User.query.get_or_404(userid)
+    except:
+        abort(404)
+
     title = request.form.get('title', None)
     content = request.form.get('content', None)
 
@@ -156,7 +177,11 @@ def create_post(userid):
 def show_post(postid):
     """Shows the specified post"""
 
-    post = Post.query.get_or_404(postid)
+    try:
+        post = Post.query.get_or_404(postid)
+    except:
+        abort(404)
+
     return render_template('post.html', post=post, user=post.user)
 
 
@@ -164,7 +189,11 @@ def show_post(postid):
 def show_edit_post_form(postid):
     """Shows the form for editing a post for the specified post"""
 
-    post = Post.query.get_or_404(postid)
+    try:
+        post = Post.query.get_or_404(postid)
+    except:
+        abort(404)
+
     return render_template('edit_post.html', post=post, user=post.user)
 
 
@@ -172,7 +201,11 @@ def show_edit_post_form(postid):
 def edit_post(postid):
     """Edits the specified post"""
 
-    post = Post.query.get_or_404(postid)
+    try:
+        post = Post.query.get_or_404(postid)
+    except:
+        abort(404)
+
     title = request.form.get('title', None)
     content = request.form.get('content', None)
 
@@ -186,7 +219,11 @@ def edit_post(postid):
 def delete_post(postid):
     """Deletes the specified post"""
 
-    post = Post.query.get_or_404(postid)
+    try:
+        post = Post.query.get_or_404(postid)
+    except:
+        abort(404)
+
     user = post.user
     db.session.delete(post)
     db.session.commit()
