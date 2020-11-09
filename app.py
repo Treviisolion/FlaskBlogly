@@ -63,6 +63,16 @@ def create_user():
     last_name = request.form.get('last_name', None)
     image_url = request.form.get('image_url', None)
 
+    # If information is somehow not provided, will show warnings to user
+    missing_first_name = False
+    missing_last_name = False
+    if not first_name:
+        missing_first_name = True
+    if not last_name:
+        missing_last_name = True
+    if missing_first_name or missing_last_name:
+        return render_template('/users/new', missing_first_name=missing_first_name, missing_last_name=missing_last_name)
+
     if not image_url:
         new_user = User(first_name=first_name, last_name=last_name)
     else:
@@ -124,6 +134,16 @@ def create_post(userid):
     title = request.form.get('title', None)
     content = request.form.get('content', None)
 
+    # If information is somehow not provided, will show warnings to user
+    missing_title = False
+    missing_content = False
+    if not title:
+        missing_title = True
+    if not content:
+        missing_content = True
+    if missing_title or missing_content:
+        return render_template('/users/new', missing_content=missing_content, missing_title=missing_title)
+
     new_post = Post(title=title, content=content, user_id=user.id)
 
     db.session.add(new_post)
@@ -160,6 +180,7 @@ def edit_post(postid):
     db.session.commit()
 
     return redirect(f'/posts/{postid}')
+
 
 @app.route('/posts/<postid>/delete', methods=['POST'])
 def delete_post(postid):

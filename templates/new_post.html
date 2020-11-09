@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block warnings %}
+
+{% if missing_title %}
+<div class="alert alert-danger" role="alert">Title is required</div>
+{% endif %}
+
+{% if missing_content %}
+<div class="alert alert-danger" role="alert">Some content is required</div>
+{% endif %}
+
+{% endblock %}
+
 {% block content %}
 
 <div class="row justify-content-md-center">

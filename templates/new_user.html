@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block warnings %}
+
+{% if missing_first_name %}
+<div class="alert alert-danger" role="alert">First name is required</div>
+{% endif %}
+
+{% if missing_last_name %}
+<div class="alert alert-danger" role="alert">Last name is required</div>
+{% endif %}
+
+{% endblock %}
+
 {% block content %}
 
 <div class="row justify-content-md-center">
@@ -8,17 +20,20 @@
 <div class="row justify-content-md-center">
     <div class="col-xl">
         <form action="/users/new" method="post">
-            <div class="form-group"> 
+            <div class="form-group">
                 <label for="first_name">First Name </label>
-                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Enter a first name" maxlength="64" required>
+                <input type="text" class="form-control" name="first_name" id="first_name"
+                    placeholder="Enter a first name" maxlength="64" required>
             </div>
             <div class="form-group">
                 <label for="last_name">Last Name </label>
-                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter a last name" maxlength="64" required>
+                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter a last name"
+                    maxlength="64" required>
             </div>
             <div class="form-group">
                 <label for="image_url">Image URL </label>
-                <input type="url" class="form-control" name="image_url" id="image_url" placeholder="Provide an image of this user">
+                <input type="url" class="form-control" name="image_url" id="image_url"
+                    placeholder="Provide an image of this user">
             </div>
             <input type="submit" value="Add" class="btn btn-success">
         </form>
