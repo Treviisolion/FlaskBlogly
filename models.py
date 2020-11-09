@@ -25,7 +25,7 @@ class User(db.Model):
     image_url = db.Column(
         db.String(), default=DEFAULT_IMAGE)
 
-    posts = db.relationship('Post')
+    posts = db.relationship('Post', cascade="all, delete")
 
     def update_user(self, first, last, url):
         """Updates the user with the provided information, if parameter is set to None will not update that field"""
