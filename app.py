@@ -71,7 +71,7 @@ def create_user():
     if not last_name:
         missing_last_name = True
     if missing_first_name or missing_last_name:
-        return render_template('/users/new', missing_first_name=missing_first_name, missing_last_name=missing_last_name)
+        return render_template('new_user.html', missing_first_name=missing_first_name, missing_last_name=missing_last_name)
 
     if not image_url:
         new_user = User(first_name=first_name, last_name=last_name)
@@ -142,7 +142,7 @@ def create_post(userid):
     if not content:
         missing_content = True
     if missing_title or missing_content:
-        return render_template('/users/new', missing_content=missing_content, missing_title=missing_title)
+        return render_template('new_post.html', missing_content=missing_content, missing_title=missing_title)
 
     new_post = Post(title=title, content=content, user_id=user.id)
 
