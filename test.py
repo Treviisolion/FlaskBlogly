@@ -46,6 +46,10 @@ class FlaskTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(resp.content_type, 'image/png')
 
+    #########
+    # Users #
+    #########
+
     def test_main_page(self):
         with app.test_client() as client:
             resp = client.get('/users')
@@ -354,6 +358,10 @@ class FlaskTests(TestCase):
 
             self.assertEqual(resp.status_code, 404)
 
+    #########
+    # Posts #
+    #########
+
     def test_new_post_form(self):
         with app.test_client() as client:
             resp = client.get('/users/1/posts/new')
@@ -594,3 +602,9 @@ class FlaskTests(TestCase):
             resp = client.post('/posts/a/delete')
 
             self.assertEqual(resp.status_code, 404)
+
+    ########
+    # Tags #
+    ########
+
+    

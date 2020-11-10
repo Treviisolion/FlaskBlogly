@@ -25,7 +25,7 @@ class User(db.Model):
     image_url = db.Column(
         db.String(), default=DEFAULT_IMAGE)
 
-    posts = db.relationship('Post', cascade="all, delete")
+    posts = db.relationship('Post', cascade="all, delete-orphan")
 
     def update_user(self, first, last, url):
         """Updates the user with the provided information, if parameter is set to None will not update that field"""
@@ -51,6 +51,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     user = db.relationship('User')
+    post_tags = db.relationship('PostTag', cascade="all, delete-orphan")
 
     def update_post(self, title, content):
         """Updates the post with the provided information, if parameter is set to None will not update that field"""
@@ -59,3 +60,27 @@ class Post(db.Model):
             self.title = title
         if content:
             self.content = content
+
+class Tag(db.Model):
+    """tag"""
+
+    __tablename__="tag"
+
+    id = db.Column(db.Integer,primary_key=True, autoincrement=True)
+    name = db.Column(db.String(), nullable=False, unique=True)
+
+    posts = db.relationship('Post', secondary='post_tag', backref='tags')
+
+    def update_tag(self, name):
+        """Updates the tag with the provided information, if parameter is set to None will not update that field"""
+
+        if name:
+            self.name = name
+
+class PostTag(db.Model):
+    """PostTag"""
+
+    __tablename__="post_tag"
+
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block warnings %}{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <h1>Tags</h1>
+</div>
+<div class="row justify-content-md-center">
+    <ul>
+        {% for tag in tags %}
+        <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class=" row justify-content-md-center">
+                <a href="/tags/new" class="btn btn-primary">Add a Tag</a>
+</div>
+
+{% endblock %}

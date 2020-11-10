@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block warnings %}
+
+{% if missing_tag_name %}
+<div class="alert alert-danger" role="alert">Tag name is required</div>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <h1>Create a tag</h1>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-xl">
+        <form action="/tags/new" method="post">
+            <div class="form-group">
+                <label for="tag_name">Name</label>
+                <input type="text" class="form-control" name="tag_name" id="tag_name" placeholder="Enter a name for the tag"
+                    maxlength="128" required>
+            </div>
+            <br>
+            <a href="/tags" class="btn btn-outline-primary">Cancel</a>
+            <input type="submit" value="Add" class="btn btn-success">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

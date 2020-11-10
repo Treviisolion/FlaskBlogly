@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block warnings %}{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <h1>{{tag.name}}</h1>
+</div>
+<div class="row justify-content-md-center">
+    <ul>
+        {% for post in posts %}
+        <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class=" row justify-content-md-center">
+                <form action="/tags/{{tag.id}}/delete" method="post">
+                    <a href="/tags" class="btn btn-outline-primary">Cancel</a>
+                    <a href="/tags/{{tag.id}}/edit" class="btn btn-primary">Edit</a>
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+</div>
+
+{% endblock %}

@@ -7,8 +7,13 @@
 <h1>{{post.title}}</h1>
 
 <p>{{post.content}}</p>
-<i>By {{user.first_name}} {{user.last_name}}</i>
-<br><br>
+<p><i>By {{user.first_name}} {{user.last_name}}</i></p>
+<p>
+    <b>Tags:</b>
+    {% for tag in tags %}
+    <i><a href="/tags/{{tag.id}}" class="badge badge-primary">{{tag.name}}</a></i>
+    {% endfor %}
+</p>
 <form action="/posts/{{post.id}}/delete" method="post">
     <a href="/users/{{user.id}}" class="btn btn-outline-primary">Cancel</a>
     <a href="/posts/{{post.id}}/edit" class="btn btn-primary">Edit</a>
