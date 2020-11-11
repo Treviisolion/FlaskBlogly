@@ -197,26 +197,35 @@ def edit_post(postid):
     content = request.form.get('content', None)
     checked_tags = request.form.getlist('tags')
 
-    # Go through each tag and compare with checked tags
-    for tag in tags:
-        for checked_tag in checked_tags:
-            # Check if the checked tag matches the tag, if so break and move onto the next tag
-            if int(checked_tag) == tag.id:
-                # Check if there already exits a posttag for the given post and tag
-                for post_tag in post_tags:
-                    if post_tag.tag_id == tag.id:
-                        break
-                # If a posttag was not found then create one
-                else:
-                    new_post_tag = PostTag(post_id=postid, tag_id=tag.id)
-                    db.session.add(new_post_tag)
-                break
-        # If tag was not in checked_tags then check if tag is in post_tags
-        else:
-            for post_tag in post_tags:
-                if post_tag.tag_id == tag.id:
-                    db.session.delete(post_tag)
-                    break
+    # Removes current post tags
+    for post_tag in post_tags:
+        db.session.delete(post_tag)
+    # Adds new post tags for all tags that were checked
+    for checked_tag in checked_tags:
+        new_post_tag = PostTag(post_id=postid, tag_id=int(checked_tag))
+        db.session.add(new_post_tag)
+    db.session.commit()
+
+    # # Go through each tag and compare with checked tags
+    # for tag in tags:
+    #     for checked_tag in checked_tags:
+    #         # Check if the checked tag matches the tag, if so break and move onto the next tag
+    #         if int(checked_tag) == tag.id:
+    #             # Check if there already exits a posttag for the given post and tag
+    #             for post_tag in post_tags:
+    #                 if post_tag.tag_id == tag.id:
+    #                     break
+    #             # If a posttag was not found then create one
+    #             else:
+    #                 new_post_tag = PostTag(post_id=postid, tag_id=tag.id)
+    #                 db.session.add(new_post_tag)
+    #             break
+    #     # If tag was not in checked_tags then check if tag is in post_tags
+    #     else:
+    #         for post_tag in post_tags:
+    #             if post_tag.tag_id == tag.id:
+    #                 db.session.delete(post_tag)
+    #                 break
 
     db.session.commit()
 
