@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
 
 app.config['SECRET_KEY'] = 'JohnathonAppleseed452'
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 # debug = DebugToolbarExtension(app)
 
 db.create_all()
@@ -152,7 +152,8 @@ def create_post(userid):
     if not content:
         missing_content = True
     if missing_title or missing_content:
-        return render_template('posts/new_post.html', user=user, missing_content=missing_content, missing_title=missing_title)
+        tags = Tag.query.all()
+        return render_template('posts/new_post.html', user=user, missing_content=missing_content, missing_title=missing_title, tags=tags)
 
     new_post = Post(title=title, content=content, user_id=user.id)
 
