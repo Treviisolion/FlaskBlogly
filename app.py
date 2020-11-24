@@ -3,6 +3,7 @@
 from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, redirect, render_template, request, send_file
 from models import db, connect_db, User, Post, Tag, PostTag, DEFAULT_IMAGE
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -11,7 +12,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
 
-app.config['SECRET_KEY'] = 'JohnathonAppleseed452'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'JohnathonAppleseed452')
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 # debug = DebugToolbarExtension(app)
 
